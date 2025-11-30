@@ -16,8 +16,8 @@ function formatAuthors(authorString) {
 function parseBibTeX(bibContent) {
   const entries = [];
   
-  // Split by @entry type (case-insensitive)
-  const entryRegex = /@(\w+)\s*\{\s*([^,\s]+)\s*,\s*([\s\S]*?)\n\s*\}/g;
+  // Match @type{key, ... } - handles multiline entries
+  const entryRegex = /@(\w+)\s*\{\s*([^,\s]+)\s*,\s*([\s\S]*?)\n\}/g;
   let match;
 
   while ((match = entryRegex.exec(bibContent)) !== null) {
@@ -26,13 +26,41 @@ function parseBibTeX(bibContent) {
     const fieldsContent = match[3];
     const fields = {};
 
-    // Parse each field: fieldname = {value} or fieldname = value,
-    const fieldRegex = /(\w+)\s*=\s*\{([^}]*)\}|(\w+)\s*=\s*([^,\n]+)/g;
-    let fieldMatch;
-
-    while ((fieldMatch = fieldRegex.exec(fieldsContent)) !== null) {
-      const fieldName = (fieldMatch[1] || fieldMatch[3]).trim().toLowerCase();
-      const fieldValue = (fieldMatch[2] || fieldMatch[4]).trim();
+    // Parse each field: fieldname = {value} or fieldname = value
+    // Handle both formats with and without braces
+    const lines = fieldsContent.split('\n');
+    let currentField = '';
+    let currentValue = '';
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      
+      // Check if this line contains an equals sign (start of a field)
+      if (trimmed.includes('=')) {
+        // Save previous field if any
+        if (currentField && currentValue) {
+          const fieldName = currentField.toLowerCase();
+          const fieldValue = currentValue.replace(/[{}]/g, '').trim().replace(/,\s*$/, '');
+          if (fieldName && fieldValue) {
+            fields[fieldName] = fieldValue;
+          }
+        }
+        
+        // Parse new field
+        const [fieldName, ...rest] = trimmed.split('=');
+        currentField = fieldName.trim();
+        currentValue = rest.join('=').trim();
+      } else {
+        // Continuation of previous field
+        currentValue += ' ' + trimmed;
+      }
+    }
+    
+    // Save last field
+    if (currentField && currentValue) {
+      const fieldName = currentField.toLowerCase();
+      const fieldValue = currentValue.replace(/[{}]/g, '').trim().replace(/,\s*$/, '');
       if (fieldName && fieldValue) {
         fields[fieldName] = fieldValue;
       }
