@@ -19,24 +19,18 @@
 
   <main class="container">
     <h2>Publications</h2>
-    <p>Below are manually-added publications. To automate this later, provide a <code>.bib</code> file and I can add a simple importer.</p>
+    <p>Publications are automatically loaded from <code>publications.bib</code>. Edit that file to add or update papers.</p>
 
-    <ol class="pub-list">
-      <li>
-        <strong>Title of Paper One</strong><br>
-        Author A., Author B., <em>Conference/Journal</em>, Year. <a href="#">PDF</a>
-      </li>
-      <li>
-        <strong>Title of Paper Two</strong><br>
-        Author A., Author C., <em>Conference/Journal</em>, Year. <a href="#">PDF</a>
-      </li>
+    <ol id="bib-list" class="pub-list">
+      <li><em>Loading publications...</em></li>
     </ol>
 
     <section>
-      <h3>Notes</h3>
+      <h3>How to update publications</h3>
       <ul>
-        <li>To add PDFs, create a `papers/` folder and link to files like `papers/paper1.pdf`.</li>
-        <li>If you want BibTeX support, paste a sample `.bib` file and I'll add a renderer.</li>
+        <li>Edit <code>publications.bib</code> in the repo (add/remove BibTeX entries)</li>
+        <li>Push to GitHub — publications auto-update on the site</li>
+        <li>Supported entry types: @article, @inproceedings, @thesis, @book, etc.</li>
       </ul>
     </section>
   </main>
@@ -44,5 +38,6 @@
   <footer class="site-footer">
     <div class="container">Your Name • Research Portfolio</div>
   </footer>
+  <script src="/js/bibtex-parser.js"></script>
 </body>
 </html>
