@@ -12,25 +12,30 @@ function formatAuthors(authorString) {
   return authors.slice(0, -1).join(', ') + ', and ' + authors[authors.length - 1];
 }
 
-// Simple BibTeX parser
+// Robust BibTeX parser
 function parseBibTeX(bibContent) {
   const entries = [];
-  const entryRegex = /@(\w+)\s*\{\s*([^,]+),\s*([\s\S]*?)\n\s*\}/g;
+  
+  // Split by @entry type (case-insensitive)
+  const entryRegex = /@(\w+)\s*\{\s*([^,\s]+)\s*,\s*([\s\S]*?)\n\s*\}/g;
   let match;
 
   while ((match = entryRegex.exec(bibContent)) !== null) {
     const type = match[1].toLowerCase();
     const key = match[2].trim();
+    const fieldsContent = match[3];
     const fields = {};
 
-    const fieldsContent = match[3];
-    const fieldRegex = /(\w+)\s*=\s*\{?([^,}]*)\}?(?=,|$)/g;
+    // Parse each field: fieldname = {value} or fieldname = value,
+    const fieldRegex = /(\w+)\s*=\s*\{([^}]*)\}|(\w+)\s*=\s*([^,\n]+)/g;
     let fieldMatch;
 
     while ((fieldMatch = fieldRegex.exec(fieldsContent)) !== null) {
-      const fieldName = fieldMatch[1].trim().toLowerCase();
-      const fieldValue = fieldMatch[2].trim().replace(/[{}]/g, '');
-      fields[fieldName] = fieldValue;
+      const fieldName = (fieldMatch[1] || fieldMatch[3]).trim().toLowerCase();
+      const fieldValue = (fieldMatch[2] || fieldMatch[4]).trim();
+      if (fieldName && fieldValue) {
+        fields[fieldName] = fieldValue;
+      }
     }
 
     entries.push({
@@ -59,32 +64,33 @@ function formatEntry(entry) {
   }
 
   // Publication details based on type
-  if (entry.type === 'article' || entry.type === 'journal') {
-    if (entry.journal) html += `${entry.journal}`;
-    if (entry.volume) html += `, vol. ${entry.volume}`;
-    if (entry.number) html += `, no. ${entry.number}`;
-    if (entry.pages) html += `, pp. ${entry.pages}`;
-  } else if (entry.type === 'inproceedings' || entry.type === 'conference') {
-    if (entry.booktitle) html += `${entry.booktitle}`;
-    if (entry.pages) html += `, pp. ${entry.pages}`;
-  } else if (entry.type === 'thesis') {
-    if (entry.school) html += `${entry.school}`;
-    if (entry.type === 'mastersthesis' || entry.type === 'thesis') html += ' (Master\'s Thesis)';
-    if (entry.type === 'phdthesis') html += ' (PhD Thesis)';
+  const pubDetails = [];
+  
+  if (entry.type === 'inproceedings' || entry.type === 'conference') {
+    if (entry.booktitle) pubDetails.push(entry.booktitle);
+  } else if (entry.type === 'article' || entry.type === 'journal') {
+    if (entry.journal) pubDetails.push(entry.journal);
   }
-
-  if (entry.year) {
-    html += `, ${entry.year}`;
+  
+  if (entry.volume) pubDetails.push(`vol. ${entry.volume}`);
+  if (entry.number) pubDetails.push(`no. ${entry.number}`);
+  if (entry.pages) pubDetails.push(`pp. ${entry.pages}`);
+  if (entry.year) pubDetails.push(entry.year);
+  
+  if (pubDetails.length > 0) {
+    html += pubDetails.join(', ') + '<br>';
   }
-
-  html += '<br>';
 
   // DOI and URL
+  const links = [];
   if (entry.doi) {
-    html += ` <a href="https://doi.org/${entry.doi}" target="_blank">DOI</a>`;
+    links.push(`<a href="https://doi.org/${entry.doi}" target="_blank">DOI</a>`);
   }
   if (entry.url) {
-    html += ` <a href="${entry.url}" target="_blank">PDF</a>`;
+    links.push(`<a href="${entry.url}" target="_blank">Link</a>`);
+  }
+  if (links.length > 0) {
+    html += links.join(' | ');
   }
 
   html += '</li>';
