@@ -1,3 +1,17 @@
+// Format authors list nicely
+function formatAuthors(authorString) {
+  if (!authorString) return '';
+  
+  // Split by " and " (BibTeX uses "and" to separate authors)
+  const authors = authorString.split(/\s+and\s+/).map(a => a.trim());
+  
+  if (authors.length === 1) return authors[0];
+  if (authors.length === 2) return authors.join(' and ');
+  
+  // For 3+ authors: "Author 1, Author 2, and Author 3"
+  return authors.slice(0, -1).join(', ') + ', and ' + authors[authors.length - 1];
+}
+
 // Simple BibTeX parser
 function parseBibTeX(bibContent) {
   const entries = [];
@@ -40,7 +54,8 @@ function formatEntry(entry) {
 
   // Authors
   if (entry.author) {
-    html += `<em>${entry.author}</em><br>`;
+    const formattedAuthors = formatAuthors(entry.author);
+    html += `<em>${formattedAuthors}</em><br>`;
   }
 
   // Publication details based on type
