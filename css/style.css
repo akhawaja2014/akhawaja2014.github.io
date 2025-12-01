@@ -1,23 +1,23 @@
 :root{
-  --bg:#f8fafc;
-  --card:#ffffff;
-  --accent:#0b5cff;
-  --text:#0f172a;
+  --bg:#0f172a;
+  --card:#1e293b;
+  --accent:#3b82f6;
+  --text:#f8fafc;
 }
 *{box-sizing:border-box}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.5;margin:0;background:var(--bg);color:var(--text)}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;font-size:1.125rem;line-height:1.5;margin:0;background:var(--bg);color:var(--text)}
 .container{max-width:900px;margin:0 auto;padding:24px}
 .site-header{background:var(--card);border-bottom:1px solid #e6eefc}
 .header-flex{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .header-content{flex:1}
 .profile-pic{width:200px;height:280px;border-radius:0 !important;object-fit:contain;flex-shrink:0}
-.site-title{margin:0;padding:18px 0;font-size:1.6rem}
-.site-sub{margin:0 0 12px 0;color:#475569}
+.site-title{margin:0;padding:18px 0;font-size:2rem}
+.site-sub{margin:0 0 12px 0;color:#94a3b8}
 .nav{display:flex;gap:12px;padding-bottom:12px}
 .nav a{color:var(--accent);text-decoration:none}
 .hero h2{margin-top:0}
 .pub-list{padding-left:18px}
 .pub-entry{margin-bottom:12px;line-height:1.6}
-.site-footer{padding:18px 0;color:#64748b;font-size:0.9rem;text-align:center}
+.site-footer{padding:18px 0;color:#94a3b8;font-size:1rem;text-align:center}
 
-@media (max-width:600px){.container{padding:16px}.site-title{font-size:1.25rem}}
+@media (max-width:600px){.container{padding:16px}.site-title{font-size:1.75rem}}
