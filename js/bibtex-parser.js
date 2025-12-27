@@ -1,15 +1,27 @@
 // Format authors list nicely
 function formatAuthors(authorString) {
   if (!authorString) return '';
-  
+
   // Split by " and " (BibTeX uses "and" to separate authors)
   const authors = authorString.split(/\s+and\s+/).map(a => a.trim());
-  
-  if (authors.length === 1) return authors[0];
-  if (authors.length === 2) return authors.join(' and ');
-  
+
+  // Process each author to convert "Last Name, First Name" to "First Name Last Name"
+  const processedAuthors = authors.map(author => {
+    // Handle "Last Name, First Name" format
+    if (author.includes(',')) {
+      const parts = author.split(',').map(p => p.trim());
+      if (parts.length === 2) {
+        return `${parts[1]} ${parts[0]}`;
+      }
+    }
+    return author;
+  });
+
+  if (processedAuthors.length === 1) return processedAuthors[0];
+  if (processedAuthors.length === 2) return processedAuthors.join(' and ');
+
   // For 3+ authors: "Author 1, Author 2, and Author 3"
-  return authors.slice(0, -1).join(', ') + ', and ' + authors[authors.length - 1];
+  return processedAuthors.slice(0, -1).join(', ') + ', and ' + processedAuthors[processedAuthors.length - 1];
 }
 
 // Robust BibTeX parser

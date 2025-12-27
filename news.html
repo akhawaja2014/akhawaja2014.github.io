@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>News — Arsalan Khawaja</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      margin: 20px 0;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      max-width: 100%;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      max-width: 400px;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+      float: left;
+      margin-right: 20px;
+      margin-bottom: 10px;
+    }
+
+    .gallery-caption {
+      color: #333;
+      padding: 12px;
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .gallery-item img {
+        width: 100%;
+        max-width: none;
+        height: 200px;
+        float: none;
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-flex">
+      <div class="header-content">
+        <h1 class="site-title">Arsalan Khawaja</h1>
+        <p class="site-sub">Researcher and Engineer</p>
+        <nav class="nav">
+          <a href="/">Home</a>
+          <a href="/publications.html">Publications</a>
+          <a href="/news.html">News</a>
+        </nav>
+      </div>
+      <img src="/images/ProfessionalPhoto.jpg" alt="Profile picture" class="profile-pic">
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>News & Updates</h2>
+    <p>Latest news, conference presentations, and research highlights.</p>
+
+    <div class="gallery">
+      <!-- Add your news images here -->
+      <!-- Example gallery items - replace with your actual images -->
+      <div class="gallery-item">
+        <img src="/images/No_CHANGE.jpeg" alt="Conference presentation" onerror="this.style.display='none'">
+        <p class="gallery-caption">November 2025: I had the opportunity to give a talk titled “Evolving RTI for Cultural Heritage” at the NoCHANGE workshop held at Colourlab NTNU, Gjøvik. 
+          My talk was focused on my PhD research and highlighting how Reflectance Transformation Imaging (RTI) has advanced over the years, and how recent developments in AI are opening exciting new possibilities and applications for RTI in cultural-heritage research.</p>
+      </div>
+
+      <div class="gallery-item">
+        <img src="/images/LIM.jpeg" alt="Research collaboration" onerror="this.style.display='none'">
+        <p class="gallery-caption">September 2025: Presented our work on Oseberg textiles at LIM 2025 conference in London.</p>
+      </div>
+
+      <div class="gallery-item">
+        <img src="/images/LIM_SummerSchool.jpeg" alt="Lab work" onerror="this.style.display='none'">
+        <p class="gallery-caption">September 2025: Attended the LIM 2025 Summer School in London, where I had the opportunity to learn about the latest advancements in Imaging Science</p>
+      </div>
+    </div>
+
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">Email: akhawaja2014@gmail.com</div>
+  </footer>
+</body>
+</html>
